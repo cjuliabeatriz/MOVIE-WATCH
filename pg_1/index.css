@@ -1,0 +1,122 @@
+/* Importa a fonte Anton do Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bungee&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+body {
+    margin: 0; /*permite que tudo fique enquadrado na tela*/
+}
+/*configura o cabeçalho*/
+#cabeçalho {
+    background-color: #1a1f2e; /*cor de fundo*/
+    height: 100px; /*altura do cabeçalho*/
+
+    display: flex; /*➡️ transforma o #cabeçalho em um container Flexbox para organizar img e nav.*/
+    align-items: center; /*➡️ manda o #cabeçalho colocar img e nav no centro vertical.*/
+    justify-content: center; /*➡️ manda o #cabeçalho colocar img e nav no centro horizontal.*/       
+}
+#cabeçalho img{ /*responsavel por ajustar a imagem*/
+    width: 80px; /*largurada logo*/
+    position: absolute;
+    left: 15px; /*distância da logo em relacao a esquerda*/
+}
+nav{
+    display: flex; /*coloca os links lado a lado*/
+    gap: 30px; /*cria um espaçamento*/
+}
+/*configurando os link*/
+nav a {
+    color: #7028b4; /*cor*/
+    font-family: 'Anton', sans-serif ;/*fonte*/
+    font-size: 20px; /*tamanho da fonte*/
+    text-decoration: none;
+}
+a:hover{
+    color: #fff;
+}
+#busca_e_frase{
+   background-color: #0c1224;
+   height: 250px;
+}
+#clara_h1{
+    margin: 0;
+    color: white ;
+    font-family:'Bungee';
+}
+#roxa_h1{
+    margin: 0;
+    color: #4d296e;
+    font-family: 'Bungee';
+}
+#p{
+    margin: 0;
+    color: white;
+    font-family: Inter;
+}
+.busca_pg1{
+    width: 500px;
+    height: 45px;
+    border: 3px solid #4d296e;
+    box-shadow:
+    0 0 5px #fff,
+    0 0 10px #200638,
+    0 0 20px #32065c,
+    0 0 40px #8a2be2;
+    border-radius: 25px; /*deixa a borda arredondada*/
+    position: relative;
+
+}
+.campo-busca button {
+    position: relative;
+    display: inline-block;
+    right: 60px;
+    top: 80%;
+    transform: translateY(-50%);
+}
+#busca_e_frase {
+    background-image: linear-gradient(to right, #0c1224 0%, transparent 40%, #0c1224 100%), url("FUNDO.png");
+    background-size: cover;/*Isso faz a imagem preencher toda a área da div, em vez de ficar repetindo daquele jeito.*/
+}
+.corpo{
+    margin: 0;
+    background-color: #0c1224;
+    
+}
+#FILMES_EM_DESTAQUE{
+    background-color:#0c1224;
+    padding: 20px;/*cria um espaço interno de 20cm*/
+    display: flex; /*coloca elementos filhos lado a lado*/
+    flex-direction: column;
+}
+
+#a_ver_todos{
+    color: #fff;
+    font-family: inter;
+    text-decoration: none;  /*tira aquela linha feia em baixo do texto*/
+    cursor: pointer;
+}
+#a_ver_todos:hover{
+    color:#7028b4
+}
+#destaque{
+     color: white;
+    font-family: Montserrat;
+    margin: 0 0 20px 0;/*adicionado espaço abaixo do cabeçalho */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+}
+#filme{
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    flex-wrap: wrap;
+    gap: 20px;
+
+    width: 100%;
+}
+#filme img{
+   border-radius: 25px;
+ 
+}
