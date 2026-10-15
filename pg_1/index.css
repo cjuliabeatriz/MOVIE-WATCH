@@ -10,7 +10,7 @@ body {
 #cabeçalho {
     background-color: #1a1f2e; /*cor de fundo*/
     height: 100px; /*altura do cabeçalho*/
-  
+
     display: flex; /*➡️ transforma o #cabeçalho em um container Flexbox para organizar img e nav.*/
     align-items: center; /*➡️ manda o #cabeçalho colocar img e nav no centro vertical.*/
     justify-content: center; /*➡️ manda o #cabeçalho colocar img e nav no centro horizontal.*/       
@@ -48,7 +48,10 @@ a:hover{
     color: #4d296e;
     font-family: 'Bungee';
 }
-#p{
+/* ALTERADO: era "#p" (minúsculo), mas no HTML o id é "P" (maiúsculo).
+   Como adicionei <!DOCTYPE html>, o navegador passou a diferenciar maiúscula
+   de minúscula nos ids, então o "#p" deixaria de funcionar. Agora é "#P". */
+#P{
     margin: 0;
     color: white;
     font-family: Inter;
@@ -108,15 +111,69 @@ a:hover{
     width: 100%;
     box-sizing: border-box;
 }
+
+/* ADICIONADO: o carrossel inteiro (seta esquerda + filmes + seta direita).
+   display:flex coloca os três lado a lado.
+   align-items:center deixa as setas no meio da altura dos filmes.
+   O padding de 20px alinha os filmes com o título "Em destaque" (que tem 20px). */
+#CARROSEL{
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 0 20px 20px 20px;
+    background-color: #0c1224;
+}
+
 #filme{
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     flex-wrap: wrap;
     gap: 20px;
 
-    width: 100%;
+    /* ALTERADO: era "width: 100%". Agora o #filme usa "flex: 1", que significa
+       "ocupe todo o espaço que sobrar entre as duas setas".
+       O min-width: 0 evita que os filmes empurrem as setas para fora da tela. */
+    flex: 1;
+    min-width: 0;
 }
 #filme img{
    border-radius: 25px;
- 
+
+   /* ADICIONADO: faz o cartaz preencher a coluna em vez de ficar do tamanho original,
+      que podia vazar para fora do espaço e empurrar as setas. */
+   width: 100%;
+   display: block;
 }
+
+/* ADICIONADO: o texto e o título dos filmes. Sem isso, o título ficava escuro
+   (cor padrão do link) em cima do fundo escuro. Se você já gosta do jeito que
+   estava, pode apagar este bloco e o próximo. */
+#filme a{
+    text-decoration: none;
+    color: #fff;
+}
+#filme h2{
+    font-family: Montserrat;
+    font-size: 16px;
+    margin: 0 0 8px 0;
+}
+
+/* ADICIONADO: aparência das setas (redondas, roxas, combinando com o site). */
+#bntAnterior, #bntProximo{
+    flex-shrink: 0;          /* a seta nunca é espremida */
+    width: 44px;
+    height: 44px;
+    border: none;
+    border-radius: 50%;
+    background-color: #4d296e;
+    color: #fff;
+    cursor: pointer;
+}
+#bntAnterior:hover, #bntProximo:hover{
+    background-color: #7028b4;
+}
+/* ADICIONADO: seta apagadinha quando não há mais filmes naquela direção */
+#bntAnterior:disabled, #bntProximo:disabled{
+    opacity: 0.35;
+    cursor: not-allowed;
+}   

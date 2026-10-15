@@ -1,54 +1,82 @@
-<HTML>
-    <head>
-        <title>MOVIE WATCH - pg1</title>
-        <meta charset="UTF-8">
-        <link rel="stylesheet" href="index.css">
-        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    </head>
-    <body>
-     <div id="cabeçalho">
-         <nav>
+<!-- ALTERADO: adicionei <!DOCTYPE html> para o navegador interpretar a página corretamente. -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <title>MOVIE WATCH - pg1</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="index.css">
+    <!-- ALTERADO: adicionei https: no começo deste link, que estava só com // -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- ALTERADO: faltava o ">" no fim desta linha. Ela estava "engolindo" o </head>. -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+
+<body>
+    <div id="cabeçalho">
+        <nav>
             <a href="index.html">Inicio</a>
             <a href="pg2.html">Filmes</a>
-            <a href="pg3.html">Favritos</a>
+            <!-- ALTERADO: "Favritos" corrigido para "Favoritos" -->
+            <a href="pg3.html">Favoritos</a>
             <a href="pg4.html">Perfil</a>
-         </nav>
-         <img src="logo.png" alt="logo_topo">
+        </nav>
+        <img src="logo.png" alt="logo_topo">
     </div>
 
-<div id="busca_e_frase">
-    <br>
-     <h1 id="clara_h1">ENCONTRE SEU PRÓXIMO</h1>
-     <h1 id="roxa_h1">  FILME </h1>
-     <br>
-     <P id="P">Explore, avalie e compartilhe sua opnião sobre os melhores filmes. </P>
-     <br>
-     <br>
+    <div id="busca_e_frase">
+        <br>
+        <h1 id="clara_h1">ENCONTRE SEU PRÓXIMO</h1>
+        <h1 id="roxa_h1"> FILME </h1>
+        <br>
+        <!-- ALTERADO: "opnião" corrigido para "opinião" -->
+        <p id="P">Explore, avalie e compartilhe sua opinião sobre os melhores filmes.</p>
+        <br>
+        <br>
 
-     <form class="campo-busca">
-      <input type="text" placeholder="Busca..." class="busca_pg1">  <!-- esse type="text"faz com que abra uma caixa de pesquisa -->   
-      <button type="submit"> <!-- esse type que vai fazer a lupa dar enter -->
-      <i class="fa-solid fa-magnifying-glass"></i>
-     </button>
-        <i class="fa-solid fa-magnifying-glass"></i>
-      </button>
-     </form>   
- </div>
+        <form class="campo-busca">
+            <input type="text" placeholder="Busca..." class="busca_pg1">
+            <!-- esse type="submit" faz a lupa dar enter -->
+            <button type="submit">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+            <!-- ALTERADO: apaguei a lupa e o </button> duplicados que estavam aqui. -->
+        </form>
+    </div>
 
-<div class="corpo">
-    <section id="FILMES_EM_DESTAQUE">
-        <div id="destaque">
-            <h2> Em destaque:</h2>
-            <a id="a_ver_todos" href="#">Ver todos → </a>
+    <div class="corpo">
+        <section id="FILMES_EM_DESTAQUE">
+            <div id="destaque">
+                <h2> Em destaque:</h2>
+                <a id="a_ver_todos" href="https://cinemeta-catalogs.strem.io/top/catalog/movie/top.json">Ver todos →</a>
+            </div>
+        </section>
+
+        <!-- CARROSEL -->
+        <div id="CARROSEL">
+
+            <!-- ALTERADO: adicionei type="button" para o botão não tentar enviar formulário -->
+            <button id="bntAnterior" type="button">
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+
+            <!-- nessa div é onde o JS insere os filmes -->
+            <!-- ALTERADO: tirei o <script> que estava aqui dentro. Ele rodava antes
+                 dos botões existirem e causava o erro. -->
+            <div id="filme"></div>
+
+            <button id="bntProximo" type="button">
+                <i class="fa-solid fa-chevron-right"></i>
+            </button>
+
         </div>
-        
-        <div id="filme">
-         <!-- nessa div onde vamos inserir os filmes --> 
-          <script src="pg1.js"></script> 
-        </div>
-    </section>
 
-</div>
-       
-    </body>
-</HTML>
+    </div>
+
+    <!-- ALTERADO: o <script> agora fica AQUI, no final do body, depois de todos os
+         elementos (botões, div#filme, formulário) já existirem na página. -->
+    <script src="pg1.js"></script>
+</body>
+
+</html>

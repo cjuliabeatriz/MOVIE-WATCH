@@ -1,107 +1,129 @@
+//cria um catalogo onde vai guaradr os filmes em uma lista, por enquanto vazia.
+//vamos guaradr nessa lista os filmes recebidos pela api.
+let filmes = [];
 
- //cria um catalogo onde vai guaradr os filmes em uma lista, por enquanto vazia.
- //vamos guaradr nessa lista os filmes recebidos pela api.
-let filmes = []; 
+let paginaAtual = 0;
 
- //faz uma requisição á api do cinemata para buscar o catalogo de filmes.
-fetch("https://cinemeta-catalogs.strem.io/top/catalog/movie/top.json")
+// ALTERADO: criei esta constante para não repetir o número 5 no código.
+// Se quiser mostrar mais ou menos filmes por página, mude só aqui.
+const FILMES_POR_PAGINA = 5;
 
- //quando a resposta x chegar, vai converter => para json
- //que é o que o js vai entender
- // . then vai guaradar a resposta no servidor
- //.then define o que acontece depois que a etapa anterior foi concluída.
-.then(resposta => resposta.json()) 
+// ALTERADO: antes o document.getElementById("filme") ficava dentro da função.
+// Agora pego os elementos uma vez só, aqui em cima.
+const areaFilmes = document.getElementById("filme");
+const bntProximo = document.getElementById("bntProximo");
+// ALTERADO: faltava pegar o botão da seta esquerda.
+const bntAnterior = document.getElementById("bntAnterior");
 
- //quando o json estiver convertido, vai receber os dados retornados pela api.
-.then(dados => {
+function MostrarFilmes() {
+    const inicio = paginaAtual * FILMES_POR_PAGINA;
+    // ALTERADO: renomeei "caminho" para "fim", que é o nome que faz sentido
+    // (o filme onde a página termina).
+    const fim = inicio + FILMES_POR_PAGINA;
 
-    //acessa a prioridade "metas" dos dados recebidos,
-    //que contém uma lista de filmes, e guarda essa lista na variável "filmes".
-    filmes = dados.metas;
+    // ALTERADO: calcula quantas páginas existem no total (usado para desativar a seta).
+    const totalPaginas = Math.ceil(filmes.length / FILMES_POR_PAGINA);
 
-    //vai acrescentar os filmes na div criada no html.
-    // ALTERADO AQUI: o nome da variável agora é areaFilmes.
-    const areaFilmes = document.getElementById("filme");
+    areaFilmes.innerHTML = "";
 
-    //filmes é a lista completa recebida pela api.
-    filmes.forEach(filme => {
-       //se introduziu no html, por estar dentro de um
-       //forEach isso acontece para cada filme da lista. 
+    filmes.slice(inicio, fim).forEach(filme => {
         areaFilmes.innerHTML += `
             <div>
                 <a href="../descrição_filme/descrição.html?id=${filme.imdb_id}"> 
                 <h2>${filme.name}</h2>
                 <img src="${filme.poster}" alt="${filme.name}">
-
                 </a>    
             </div>
         `;
-    });  
-    //${filme.imdb_id} --> identificao filme atual 
-    //<h2>${filme.name}</h2> --> puxa o nome 
-    //src="${filme.poster}" alt="${filme.name}" --> puxa que pelo poster vai ter a mesma funcionalidade
-    //de entrar na descrição do filme só pela img. 
+        // ALTERADO: removi a linha solta "paginaAtual;" que estava aqui.
+        // Ela não fazia nada.
+    });
 
-    console.log(filmes);
+    // ALTERADO: desativa a seta esquerda na primeira página
+    // e a seta direita na última página.
+    bntAnterior.disabled = paginaAtual === 0;
+    bntProximo.disabled = paginaAtual >= totalPaginas - 1;
+}
 
+// ALTERADO: antes era bntProximo.addEventListener("caminho"), o que dava erro.
+// O evento correto é "click", e é preciso passar uma função que diz o que fazer.
+bntProximo.addEventListener("click", function () {
+    // só avança se ainda houver filmes na próxima página
+    if ((paginaAtual + 1) * FILMES_POR_PAGINA < filmes.length) {
+        paginaAtual++;
+        MostrarFilmes();
+    }
 });
- //FAZENDO O CAMPO DE PESQUISA FUNCIONAR
-   // a const formulário vai ter acesso a parte de busca 
- 
- // Encontra o formulário de pesquisa no HTML pela classe "campo-busca".
+
+// ALTERADO: este botão não tinha código nenhum. Agora a seta esquerda funciona.
+bntAnterior.addEventListener("click", function () {
+    if (paginaAtual > 0) {
+        paginaAtual--;
+        MostrarFilmes();
+    }
+});
+
+//faz uma requisição á api do cinemata para buscar o catalogo de filmes.
+fetch("https://cinemeta-catalogs.strem.io/top/catalog/movie/top.json")
+
+    //quando a resposta x chegar, vai converter => para json
+    //que é o que o js vai entender
+    .then(resposta => resposta.json())
+
+    //quando o json estiver convertido, vai receber os dados retornados pela api.
+    .then(dados => {
+
+        //acessa a prioridade "metas" dos dados recebidos,
+        //que contém uma lista de filmes, e guarda essa lista na variável "filmes".
+        filmes = dados.metas;
+
+        // ALTERADO (A MAIS IMPORTANTE): faltava chamar MostrarFilmes() aqui.
+        // Sem isso os filmes chegavam da API, mas nunca eram desenhados na tela.
+        paginaAtual = 0;
+        MostrarFilmes();
+
+        console.log(filmes);
+    })
+    // ALTERADO: se a internet cair ou a API falhar, o erro aparece no console (F12).
+    .catch(erro => console.error("Erro ao carregar filmes:", erro));
+
+//FAZENDO O CAMPO DE PESQUISA FUNCIONAR
+
+// Encontra o formulário de pesquisa no HTML pela classe "campo-busca".
 const formulario = document.querySelector(".campo-busca");
 
 // Fica esperando o usuário enviar o formulário, apertando Enter ou clicando no botão.
-formulario.addEventListener("submit", function(evento) {
+formulario.addEventListener("submit", function (evento) {
 
     // Impede que o navegador recarregue a página ao enviar o formulário.
     evento.preventDefault();
 
-    // Encontra a caixa de texto dentro do formulário, pega o que foi digitado
-    // e remove espaços em branco que estejam no começo ou no final.
+    // Pega o que foi digitado e remove espaços no começo e no fim.
     const pesquisa = formulario.querySelector("input").value.trim();
 
-    // Verifica se o usuário deixou a caixa vazia.
+    // Se a caixa estiver vazia, encerra a função.
     if (pesquisa === "") {
-
-        // Encerra a função se não houver nenhum texto para pesquisar.
         return;
     }
 
     // Faz uma requisição à API Cinemeta usando o nome digitado na pesquisa.
-    // encodeURIComponent prepara o texto para ser usado dentro da URL,
-    // inclusive quando o nome tem espaços ou caracteres especiais.
+    // encodeURIComponent prepara o texto para ser usado dentro da URL.
     fetch(`https://v3-cinemeta.strem.io/catalog/movie/top/search=${encodeURIComponent(pesquisa)}.json`)
 
-        // Converte a resposta recebida da API para um objeto JavaScript.
         .then(resposta => resposta.json())
 
-        // Executa este bloco quando os dados já estiverem convertidos.
         .then(dados => {
-            filmes.slice(0, 4)
-            // Encontra a área do HTML onde os filmes serão exibidos.
-            const areaFilmes = document.getElementById("filme");
+            // ALTERADO: removi "filmes.slice(0, 4)" e todo o código que desenhava
+            // os filmes aqui dentro. O slice sozinho não fazia nada, e o resto
+            // tinha o typo "areaFilmesilmes".
 
-            // Apaga os filmes que estavam aparecendo antes da nova pesquisa.
-            areaFilmes.innerHTML = "";
-
-            // Guarda na variável "filmes" a lista de resultados da pesquisa.
-            areaFilmesilmes = dados.metas;
-
-            // Percorre a lista, executando o código abaixo para cada filme.
-            filmes.forEach(filme => {
-
-                // Adiciona à página um título, um cartaz e um link para cada filme.
-                // As crases permitem escrever HTML em várias linhas e inserir variáveis.
-                areaFilmes.innerHTML += `
-                    <div>
-                        <a href="../descrição_filme/descrição.html?id=${filme.imdb_id}">
-                            <h2>${filme.name}</h2>
-                            <img src="${filme.poster}" alt="${filme.name}">
-                        </a>
-                    </div>
-                `;
-            });
-        });
+            // ALTERADO: agora os resultados da pesquisa substituem a lista "filmes",
+            // voltamos para a página 0 e usamos a MESMA função MostrarFilmes().
+            // Assim a pesquisa também funciona com as setas.
+            filmes = dados.metas;
+            paginaAtual = 0;
+            MostrarFilmes();
+        })
+        // ALTERADO: mostra erro no console se a pesquisa falhar.
+        .catch(erro => console.error("Erro na pesquisa:", erro));
 });
-  
