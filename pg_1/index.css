@@ -10,7 +10,7 @@ body {
 #cabeçalho {
     background-color: #1a1f2e; /*cor de fundo*/
     height: 100px; /*altura do cabeçalho*/
-
+  
     display: flex; /*➡️ transforma o #cabeçalho em um container Flexbox para organizar img e nav.*/
     align-items: center; /*➡️ manda o #cabeçalho colocar img e nav no centro vertical.*/
     justify-content: center; /*➡️ manda o #cabeçalho colocar img e nav no centro horizontal.*/       
