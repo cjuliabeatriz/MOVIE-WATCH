@@ -3,162 +3,244 @@
 @import url('https://fonts.googleapis.com/css2?family=Bungee&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
 body {
-    margin: 0; /*permite que tudo fique enquadrado na tela*/
-}
-/*configura o cabeçalho*/
-#cabeçalho {
-    background-color: #1a1f2e; /*cor de fundo*/
-    height: 100px; /*altura do cabeçalho*/
-
-    display: flex; /*➡️ transforma o #cabeçalho em um container Flexbox para organizar img e nav.*/
-    align-items: center; /*➡️ manda o #cabeçalho colocar img e nav no centro vertical.*/
-    justify-content: center; /*➡️ manda o #cabeçalho colocar img e nav no centro horizontal.*/       
-}
-#cabeçalho img{ /*responsavel por ajustar a imagem*/
-    width: 80px; /*largurada logo*/
-    position: absolute;
-    left: 15px; /*distância da logo em relacao a esquerda*/
-}
-nav{
-    display: flex; /*coloca os links lado a lado*/
-    gap: 30px; /*cria um espaçamento*/
-}
-/*configurando os link*/
-nav a {
-    color: #7028b4; /*cor*/
-    font-family: 'Anton', sans-serif ;/*fonte*/
-    font-size: 20px; /*tamanho da fonte*/
-    text-decoration: none;
-}
-a:hover{
-    color: #fff;
-}
-#busca_e_frase{
-   background-color: #0c1224;
-   height: 250px;
-}
-#clara_h1{
     margin: 0;
-    color: white ;
-    font-family:'Bungee';
-}
-#roxa_h1{
-    margin: 0;
-    color: #4d296e;
-    font-family: 'Bungee';
-}
-/* ALTERADO: era "#p" (minúsculo), mas no HTML o id é "P" (maiúsculo).
-   Como adicionei <!DOCTYPE html>, o navegador passou a diferenciar maiúscula
-   de minúscula nos ids, então o "#p" deixaria de funcionar. Agora é "#P". */
-#P{
-    margin: 0;
-    color: white;
-    font-family: Inter;
-}
-.busca_pg1{
-    width: 500px;
-    height: 45px;
-    border: 3px solid #4d296e;
-    box-shadow:
-    0 0 5px #fff,
-    0 0 10px #200638,
-    0 0 20px #32065c,
-    0 0 40px #8a2be2;
-    border-radius: 25px; /*deixa a borda arredondada*/
-    position: relative;
-
-}
-.campo-busca button {
-    position: relative;
-    display: inline-block;
-    right: 60px;
-    top: 80%;
-    transform: translateY(-50%);
-}
-#busca_e_frase {
-    background-image: linear-gradient(to right, #0c1224 0%, transparent 40%, #0c1224 100%), url("FUNDO.png");
-    background-size: cover;/*Isso faz a imagem preencher toda a área da div, em vez de ficar repetindo daquele jeito.*/
-}
-.corpo{
-    margin: 0;
-    background-color: #0c1224;
-    
-}
-#FILMES_EM_DESTAQUE{
-    background-color:#0c1224;
-    padding: 20px;/*cria um espaço interno de 20cm*/
-    display: flex; /*coloca elementos filhos lado a lado*/
-    flex-direction: column;
 }
 
-#a_ver_todos{
-    color: #fff;
-    font-family: inter;
-    text-decoration: none;  /*tira aquela linha feia em baixo do texto*/
-    cursor: pointer;
-}
-#a_ver_todos:hover{
-    color:#7028b4
-}
-#destaque{
-     color: white;
-    font-family: Montserrat;
-    margin: 0 0 20px 0;/*adicionado espaço abaixo do cabeçalho */
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
+/* Container centralizado com largura máxima */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
     box-sizing: border-box;
 }
 
-/* ADICIONADO: o carrossel inteiro (seta esquerda + filmes + seta direita).
-   display:flex coloca os três lado a lado.
-   align-items:center deixa as setas no meio da altura dos filmes.
-   O padding de 20px alinha os filmes com o título "Em destaque" (que tem 20px). */
-#CARROSEL{
+/* configura o cabeçalho */
+#cabeçalho {
+    background-color: #1a1f2e;
+    height: 100px;
     display: flex;
     align-items: center;
-    gap: 16px;
-    padding: 0 20px 20px 20px;
+    justify-content: center;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+#cabeçalho img {
+    width: 80px;
+    position: absolute;
+    left: 20px;
+}
+
+nav {
+    display: flex;
+    gap: 30px;
+}
+
+nav a {
+    color: #7028b4;
+    font-family: 'Anton', sans-serif;
+    font-size: 20px;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #fff;
+}
+
+/* Banner principal */
+#busca_e_frase {
+    background-color: #0c1224;
+    padding: 60px 0;
+    box-sizing: border-box;
+}
+
+#busca_e_frase .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 20px;
+}
+
+#clara_h1 {
+    margin: 0;
+    color: white;
+    font-family: 'Bungee';
+    font-size: 48px;
+}
+
+#roxa_h1 {
+    margin: 0;
+    color: #4d296e;
+    font-family: 'Bungee';
+    font-size: 48px;
+}
+
+#P {
+    margin: 0;
+    color: white;
+    font-family: Inter;
+    font-size: 18px;
+    max-width: 800px;
+}
+
+/* Campo de pesquisa */
+.campo-busca {
+    position: relative;
+    max-width: 560px;
+    margin-left: 0;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.busca_pg1 {
+    flex: 1;
+    max-width: 500px;
+    height: 50px;
+    border: 3px solid #4d296e;
+    box-shadow:
+        0 0 5px #fff,
+        0 0 10px #200638,
+        0 0 20px #32065c,
+        0 0 40px #8a2be2;
+    border-radius: 30px;
+    padding: 0 25px;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    background: transparent;
+    color: #fff;
+    outline: none;
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.busca_pg1::placeholder {
+    color: #ccc;
+}
+
+.busca_pg1:focus {
+    box-shadow:
+        0 0 8px #fff,
+        0 0 15px #7028b4,
+        0 0 30px #4d296e;
+    border-color: #7028b4;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.campo-busca button {
+    width: 44px;
+    height: 44px;
+    border: none;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #4d296e, #7028b4);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(77, 41, 110, 0.4);
+    transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    flex-shrink: 0;
+}
+
+.campo-busca button i {
+    font-size: 18px;
+}
+
+.campo-busca button:hover {
+    background: linear-gradient(135deg, #7028b4, #4d296e);
+    transform: scale(1.05);
+    box-shadow: 0 6px 14px rgba(77, 41, 110, 0.6);
+}
+
+.campo-busca button:active {
+    transform: scale(0.95);
+}
+
+#busca_e_frase {
+    background-image: linear-gradient(to right, #0c1224 0%, transparent 40%, #0c1224 100%), url("FUNDO.png");
+    background-size: cover;
+}
+
+/* Corpo da página */
+.corpo {
+    margin: 0;
     background-color: #0c1224;
 }
 
-#filme{
+/* Seção Em destaque */
+#FILMES_EM_DESTAQUE {
+    background-color: #0c1224;
+    padding: 40px 0 20px 0;
+    box-sizing: border-box;
+}
+
+#destaque {
+    color: white;
+    font-family: Montserrat;
+    margin: 0 0 0 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: calc(100% - 60px);
+    box-sizing: border-box;
+}
+
+#a_ver_todos {
+    color: #fff;
+    font-family: inter;
+    text-decoration: none;
+    cursor: pointer;
+    
+}
+
+#a_ver_todos:hover {
+    color: #7028b4;
+}
+
+/* Carrossel */
+#CARROSEL {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 0 20px 40px 20px;
+    background-color: #0c1224;
+    box-sizing: border-box;
+}
+
+#filme {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     flex-wrap: wrap;
     gap: 20px;
-
-    /* ALTERADO: era "width: 100%". Agora o #filme usa "flex: 1", que significa
-       "ocupe todo o espaço que sobrar entre as duas setas".
-       O min-width: 0 evita que os filmes empurrem as setas para fora da tela. */
     flex: 1;
     min-width: 0;
 }
-#filme img{
-   border-radius: 25px;
 
-   /* ADICIONADO: faz o cartaz preencher a coluna em vez de ficar do tamanho original,
-      que podia vazar para fora do espaço e empurrar as setas. */
-   width: 100%;
-   display: block;
+#filme img {
+    border-radius: 25px;
+    width: 100%;
+    display: block;
+    transition: box-shadow 0.3s ease;
 }
 
-/* ADICIONADO: o texto e o título dos filmes. Sem isso, o título ficava escuro
-   (cor padrão do link) em cima do fundo escuro. Se você já gosta do jeito que
-   estava, pode apagar este bloco e o próximo. */
-#filme a{
+#filme img:hover {
+    box-shadow: 0 0 15px #7028b4, 0 0 30px #4d296e, 0 0 45px #7028b4;
+}
+
+#filme a {
     text-decoration: none;
     color: #fff;
 }
-#filme h2{
-    font-family: Montserrat;
-    font-size: 16px;
-    margin: 0 0 8px 0;
+
+#filme h2 {
+    display: none;
 }
 
-/* ADICIONADO: aparência das setas (redondas, roxas, combinando com o site). */
 #bntAnterior, #bntProximo{
     flex-shrink: 0;          /* a seta nunca é espremida */
     width: 44px;
@@ -177,3 +259,107 @@ a:hover{
     opacity: 0.35;
     cursor: not-allowed;
 }   
+
+/* === MOBILE / RESPONSIVO PG1 === */
+@media (max-width: 768px) {
+    #cabeçalho {
+        flex-direction: column;
+        height: auto;
+        padding: 15px 0;
+        gap: 10px;
+    }
+
+    #cabeçalho img {
+        position: static;
+        width: 60px;
+        margin-top: 10px;
+    }
+
+    nav {
+        flex-direction: column;
+        gap: 12px;
+        align-items: center;
+    }
+
+    nav a {
+        font-size: 16px;
+    }
+
+    #busca_e_frase {
+        padding: 40px 0;
+    }
+
+    #busca_e_frase .container {
+        gap: 16px;
+    }
+
+    #clara_h1,
+    #roxa_h1 {
+        font-size: 28px;
+    }
+
+    #P {
+        font-size: 14px;
+    }
+
+    .campo-busca {
+        max-width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .busca_pg1 {
+        width: 100%;
+        max-width: 100%;
+        height: 48px;
+        font-size: 15px;
+        padding: 0 20px;
+    }
+
+    .campo-busca button {
+        width: 42px;
+        height: 42px;
+        align-self: flex-end;
+    }
+
+    #CARROSEL {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 0 15px 40px 15px;
+        gap: 15px;
+    }
+
+    #filme {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        flex: none;
+        width: 100%;
+    }
+
+    #bntAnterior, #bntProximo {
+        width: 40px;
+        height: 40px;
+        align-self: center;
+    }
+}
+
+@media (max-width: 480px) {
+    #clara_h1,
+    #roxa_h1 {
+        font-size: 22px;
+    }
+
+    .busca_pg1 {
+        height: 46px;
+        font-size: 14px;
+    }
+
+    .campo-busca button {
+        width: 40px;
+        height: 40px;
+    }
+
+    #filme {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+}
