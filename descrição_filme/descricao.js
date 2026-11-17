@@ -1,31 +1,168 @@
-//pega o id do filme que veio na url
-//na url u id do filme fica depois do ? pois dessa forma o site
-//consegue buscar o filme pelo id
-const parametros = new URLSearchParams(window.location.search); 
-const idFilme = parametros.get("id"); 
+// Pega o ID do filme que veio na URL (ex: .../descrição.html?id=tt0111161)
+const parametros = new URLSearchParams(window.location.search);
+const idFilme = parametros.get("id");
 
-console.log("ID do filme:", idFilme); //mostra o identificador extraído da URL
-console.log("URL atual:", window.location.href); //mostra a rl completa na página 
+const banner = document.getElementById("banner");
+const elNome = document.getElementById("nome_filme");
+const elPoster = document.getElementById("poster_filme");
+const elAno = document.getElementById("ano_filme");
+const elNota = document.getElementById("nota_filme");
+const elValorNota = document.querySelector(".valor-nota");
+const elGeneros = document.getElementById("generos_filme");
+const elSinopse = document.getElementById("sinopse_filme");
+const elDiretor = document.getElementById("diretor_filme");
+const elElenco = document.getElementById("elenco_filme");
+const elReleased = document.getElementById("released_filme");
+const elRuntime = document.getElementById("runtime_filme");
 
-//busca os dados completos do fime no cinemeta
+const IMG_FALLBACK = "https://via.placeholder.com/300x450?text=Sem+imagem";
+const MSG_INDISPONIVEL = "Não disponível";
 
-//consulta o id na api (pelo fetch) pela url
+// Valida se há ID na URL
+if (!idFilme) {
+    exibirErro("ID do filme não informado na URL.");
+    throw new Error("ID do filme não informado na URL.");
+}
+
+// Busca os dados completos do filme no Cinemeta
 fetch(`https://v3-cinemeta.strem.io/meta/movie/${idFilme}.json`)
-.then(resposta => resposta.json())
-.then(dados => {
-    //DEPOIS DISSO Recebe os dados já interpretados e executa as instruções dentro das chaves { }
-   
-   // iformações do filme em expecifico
-    const filme = dados.meta; 
+    .then(resposta => {
+        if (!resposta.ok) {
+            throw new Error("Filme não encontrado na API.");
+        }
+        return resposta.json();
+    })
+    .then(dados => {
+        const filme = dados.meta;
+        if (!filme) {
+            exibirErro("Dados do filme não encontrados.");
+            return;
+        }
 
-    //colocaas informações nos espaços html 
-    document.title = filme.name;
-        document.getElementById("nome_filme").textContent = filme.name;
-        document.getElementById("poster_filme").src = filme.poster;
-        document.getElementById("sinopse_filme").textContent = filme.description || "Sinopse indisponível";
-        document.getElementById("nota_filme").textContent = "Nota IMDb: " + (filme.imdbRating || "Não disponível");
-        document.getElementById("ano_filme").textContent = "Ano: " + (filme.year || filme.releaseInfo || "Não disponível");
-        document.getElementById("diretor_filme").textContent = "Direção: " + (filme.director?.join(", ") || "Não disponível");
-        document.getElementById("elenco_filme").textContent = "Elenco: " + (filme.cast?.join(", ") || "Não disponível");
-        document.getElementById("generos_filme").textContent = "Gêneros: " + (filme.genres?.join(", ") || "Não disponíveis");
-})
+        preencherPagina(filme);
+    })
+    .catch(erro => {
+        console.error("Erro ao carregar filme:", erro);
+        exibirErro(erro.message || "Não foi possível carregar o filme.");
+    });
+
+function preencherPagina(filme) {
+    // Título da aba e da página
+    document.title = filme.name || "Descrição do filme";
+    if (elNome) elNome.textContent = filme.name || MSG_INDISPONIVEL;
+
+    // Imagem de fundo do banner (com fallback)
+    if (banner && filme.background) {
+        banner.style.setProperty("--imagem-fundo", `url(${filme.background})`);
+    } else if (banner) {
+        banner.style.setProperty(
+            "--imagem-fundo",
+            "linear-gradient(180deg, #0c1224 0%, #141b2d 100%)"
+        );
+    }
+
+    // Pôster
+    if (elPoster) {
+        elPoster.src = filme.poster || IMG_FALLBACK;
+        elPoster.alt = `Cartaz do filme ${filme.name || ""}`;
+        elPoster.onerror = () => {
+            elPoster.src = IMG_FALLBACK;
+        };
+    }
+
+    // Ano de lançamento (preferência: year > releaseInfo > extraído de released)
+    const ano = filme.year
+        || filme.releaseInfo
+        || (filme.released ? String(filme.released).slice(0, 4) : null);
+    if (elAno) elAno.textContent = ano ? String(ano) : MSG_INDISPONIVEL;
+
+    // Nota IMDb com ícone de estrela
+    if (elNota && elValorNota) {
+        if (filme.imdbRating) {
+            elValorNota.textContent = filme.imdbRating;
+            elNota.style.display = "flex";
+        } else {
+            elNota.style.display = "none";
+        }
+    }
+
+    // Sinopse
+    if (elSinopse) {
+        elSinopse.textContent = filme.description || MSG_INDISPONIVEL;
+    }
+
+    // Gêneros como etiquetas visuais (suporta ambos 'genres' e 'genre' da API)
+    const generos = Array.isArray(filme.genres) ? filme.genres
+        : Array.isArray(filme.genre) ? filme.genre
+        : [];
+    renderizarGeneros(elGeneros, generos);
+
+    // Direção
+    if (elDiretor) {
+        const diretor = Array.isArray(filme.director) ? filme.director.join(", ")
+            : filme.director || MSG_INDISPONIVEL;
+        elDiretor.textContent = diretor;
+    }
+
+    // Elenco
+    if (elElenco) {
+        const elenco = Array.isArray(filme.cast) ? filme.cast.join(", ")
+            : filme.cast || MSG_INDISPONIVEL;
+        elElenco.textContent = elenco;
+    }
+
+    // Data de lançamento formatada (fallback para ano)
+    if (elReleased) {
+        elReleased.textContent = formatarData(filme.released)
+            || (ano ? String(ano) : MSG_INDISPONIVEL);
+    }
+
+    // Duração
+    if (elRuntime) {
+        elRuntime.textContent = filme.runtime ? `${filme.runtime}` : MSG_INDISPONIVEL;
+    }
+}
+
+function renderizarGeneros(container, generos) {
+    if (!container) return;
+    container.innerHTML = "";
+
+    if (!generos || generos.length === 0) {
+        container.innerHTML = `<span style="color:var(--cor-texto-secundario); font-size:0.85rem;">${MSG_INDISPONIVEL}</span>`;
+        return;
+    }
+
+    generos.forEach(genero => {
+        const tag = document.createElement("span");
+        tag.className = "tag-genero";
+        tag.innerHTML = `<i class="fa-solid fa-tag"></i>${genero}`;
+        container.appendChild(tag);
+    });
+}
+
+function formatarData(iso) {
+    if (!iso) return null;
+    try {
+        const data = new Date(iso);
+        if (isNaN(data.getTime())) return null;
+        return data.toLocaleDateString("pt-BR", {
+            day: "numeric",
+            month: "long",
+            year: "numeric"
+        });
+    } catch (e) {
+        return null;
+    }
+}
+
+function exibirErro(mensagem) {
+    document.title = "Erro - MOVIE WATCH";
+    if (elNome) elNome.textContent = "Erro ao carregar o filme";
+    if (elSinopse) elSinopse.textContent = mensagem;
+    if (banner) {
+        banner.style.setProperty(
+            "--imagem-fundo",
+            "linear-gradient(180deg, #0c1224 0%, #141b2d 100%)"
+        );
+    }
+}

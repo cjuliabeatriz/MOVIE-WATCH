@@ -1,28 +1,72 @@
-<html>
-    <head>
-        <title>descrição</title>
-        <meta charset="UTF-8">
-    </head>
-    <body>
-        <div id="informacoes_filme"></div>
+<!DOCTYPE html>
+<html lang="pt-BR">
 
-    <h1 id="nome_filme"></h1>
+<head>
+    <title>MOVIE WATCH - Descrição</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="descricao.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
 
-    <img id="poster_filme" alt="Cartaz do filme">
+<body>
+    <header class="cabecalho">
+        <button class="btn-voltar" onclick="window.history.back()">
+            <i class="fa-solid fa-arrow-left"></i> Voltar
+        </button>
+    </header>
 
-    <p id="sinopse_filme"></p>
+    <section class="banner" id="banner">
+        <div class="overlay"></div>
+        <div class="banner-conteudo">
+            <div class="banner-esquerda">
+                <img id="poster_filme" class="poster-banner" alt="Cartaz do filme">
+            </div>
+            <div class="banner-direita">
+                <h1 id="nome_filme" class="titulo-filme"></h1>
+                <div class="linha-info">
+                    <span id="ano_filme" class="ano-filme"></span>
+                    <span class="separador">·</span>
+                    <span class="nota-filme" id="nota_filme">
+                        <i class="fa-solid fa-star"></i>
+                        <span class="valor-nota"></span>
+                    </span>
+                </div>
+                <div id="generos_filme" class="generos-container"></div>
+                <p id="sinopse_filme" class="sinopse"></p>
+            </div>
+        </div>
+    </section>
 
-    <p id="nota_filme"></p>
+    <section class="info-adicional" id="info_adicional">
+        <div class="container">
+            <h2>Informações do filme</h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="label">Direção</span>
+                    <span class="valor" id="diretor_filme"></span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Elenco</span>
+                    <span class="valor" id="elenco_filme"></span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Lançamento</span>
+                    <span class="valor" id="released_filme"></span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Duração</span>
+                    <span class="valor" id="runtime_filme"></span>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <p id="ano_filme"></p>
-
-    <p id="diretor_filme"></p>
-
-    <p id="elenco_filme"></p>
-
-    <p id="generos_filme"></p>
+    <footer class="rodape">
+        MOVIE WATCH &bull; Descubra seu próximo filme favorito
+    </footer>
 
     <script src="descricao.js"></script>
+</body>
 
-    </body>
 </html>
