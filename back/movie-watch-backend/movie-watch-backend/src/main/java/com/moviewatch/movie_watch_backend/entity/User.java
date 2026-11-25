@@ -3,12 +3,15 @@ package com.moviewatch.movie_watch_backend.entity;
 
 // Importações do JPA.
 // Essas ferramentas permitem mapear a classe Java para uma tabela do PostgreSQL.
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Column;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 
 // Importa o tipo utilizado para armazenar datas e horários.
 import java.time.LocalDateTime;
@@ -41,6 +44,9 @@ public class User {
 
     // Armazena o hash da senha.
     // Importante: não armazenamos a senha original do usuário.
+    // @JsonIgnore garante que o hash nunca seja serializado em respostas HTTP,
+    // mesmo que a entidade seja usada diretamente por engano.
+    @JsonIgnore
     @Column(name = "password_hash", nullable = false, length = 255)
     private String passwordHash;
 
@@ -51,10 +57,14 @@ public class User {
 
     // Armazena o hash do token utilizado para recuperar a senha.
     // Pode ficar vazio (null) quando não existe recuperação em andamento.
+    @JsonIgnore
     @Column(name = "reset_token_hash", length = 255)
     private String resetTokenHash;
 
     // Armazena a data e o horário de validade do token de recuperação.
+    // O nome da coluna é explícito para facilitar a validação do Hibernate.
+    @JsonIgnore
+    @Column(name = "reset_token_expires")
     private LocalDateTime resetTokenExpires;
 
     // Registra quando a conta foi criada.
@@ -67,9 +77,32 @@ public class User {
     private LocalDateTime updatedAt;
 
 
-    // CONSTRUTOR VAZIO
+    // Construtor vazio exigido pelo JPA.
     // O JPA precisa de um construtor sem parâmetros para instanciar a entidade.
     public User() {
+    }
+
+    // Preenche as datas automaticamente antes de inserir a conta.
+    // As colunas created_at e updated_at são NOT NULL no PostgreSQL.
+    @PrePersist
+    void prePersist() {
+        LocalDateTime agora = LocalDateTime.now();
+
+        if (createdAt == null) {
+            createdAt = agora;
+        }
+
+        if (updatedAt == null) {
+            updatedAt = agora;
+        }
+    }
+
+    // Atualiza a data de modificação antes de cada UPDATE.
+    // O trigger do banco também atualiza updated_at; manter os dois
+    // deixa o comportamento correto mesmo sem o trigger.
+    @PreUpdate
+    void preUpdate() {
+        updatedAt = LocalDateTime.now();
     }
 
 

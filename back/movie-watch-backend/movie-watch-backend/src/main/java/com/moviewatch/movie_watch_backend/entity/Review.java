@@ -1,6 +1,7 @@
 
 package com.moviewatch.movie_watch_backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
@@ -10,6 +11,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 
 import java.time.LocalDateTime;
 
@@ -27,6 +30,8 @@ public class Review {
 
     // Relacionamento com o usuário que escreveu a avaliação.
     // Um usuário pode escrever várias avaliações.
+    // @JsonIgnore evita que a entidade dona apareça na serialização.
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
@@ -46,13 +51,13 @@ public class Review {
     private String comment;
 
     // Data de criação da avaliação.
-    // Preenchida automaticamente pelo banco.
-    @Column(name = "created_at", insertable = false, updatable = false)
+    // A aplicação preenche o valor; o banco também possui DEFAULT.
+    @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
     // Data da última atualização.
-    // O trigger do PostgreSQL é responsável por atualizar esse campo.
-    @Column(name = "updated_at", insertable = false, updatable = false)
+    // O trigger do PostgreSQL também atualiza este campo.
+    @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
 
@@ -60,11 +65,36 @@ public class Review {
     public Review() {
     }
 
+    // Preenche as datas antes da inserção.
+    @PrePersist
+    void prePersist() {
+        LocalDateTime agora = LocalDateTime.now();
+
+        if (createdAt == null) {
+            createdAt = agora;
+        }
+
+        if (updatedAt == null) {
+            updatedAt = agora;
+        }
+    }
+
+    // Mantém a data de atualização coerente antes de cada UPDATE.
+    @PreUpdate
+    void preUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
+
 
     // GETTERS E SETTERS
 
     public Long getId() {
         return id;
+    }
+
+    // Define o ID (usado pelo JPA e em testes).
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public User getUser() {
@@ -103,7 +133,17 @@ public class Review {
         return createdAt;
     }
 
+    // Define a data de criação (usada em testes).
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
+    }
+
+    // Define a data de atualização (usada em testes).
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

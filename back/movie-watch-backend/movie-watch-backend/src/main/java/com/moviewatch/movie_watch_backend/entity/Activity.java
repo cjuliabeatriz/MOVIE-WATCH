@@ -1,6 +1,7 @@
 
 package com.moviewatch.movie_watch_backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
@@ -10,6 +11,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.PrePersist;
 
 import java.time.LocalDateTime;
 
@@ -27,6 +29,8 @@ public class Activity {
 
     // Relacionamento com o usuário responsável pela atividade.
     // Um usuário pode possuir várias atividades.
+    // @JsonIgnore evita que a entidade dona apareça na serialização.
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
@@ -42,8 +46,8 @@ public class Activity {
     private String movieId;
 
     // Data e horário em que a atividade aconteceu.
-    // O PostgreSQL preenche esse campo automaticamente.
-    @Column(name = "created_at", insertable = false, updatable = false)
+    // A aplicação preenche o valor; o banco também possui DEFAULT.
+    @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
 
@@ -51,11 +55,24 @@ public class Activity {
     public Activity() {
     }
 
+    // Garante que a data da atividade seja preenchida na inserção.
+    @PrePersist
+    void prePersist() {
+        if (createdAt == null) {
+            createdAt = LocalDateTime.now();
+        }
+    }
+
 
     // GETTERS E SETTERS
 
     public Long getId() {
         return id;
+    }
+
+    // Define o ID (usado pelo JPA e em testes).
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public User getUser() {
@@ -84,5 +101,10 @@ public class Activity {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    // Define a data de criação (usada em testes).
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }

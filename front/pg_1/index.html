@@ -1,0 +1,82 @@
+<!-- ALTERADO: adicionei <!DOCTYPE html> para o navegador interpretar a página corretamente. -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <title>MOVIE WATCH - pg1</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+
+<body>
+    <div id="cabeçalho">
+        <nav>
+            <a href="index.html" id="nav_inicio" class="ativo">Inicio</a>
+            <a href="../pg_2/pg2.html" id="nav_filmes">Filmes</a>
+            <a href="../pg_3/pg3.html" id="nav_favoritos">Favoritos</a>
+            <a href="../pg_4/pg4.html" id="nav_perfil">Perfil</a>
+            <a href="../pg_6/login.html" id="nav_login">Login</a>
+            <a href="../pg_5/cadastro.html" id="nav_cadastro">Criar Conta</a>
+            <a href="#" id="nav_sair">Sair</a>
+        </nav>
+        <img src="logo.png" alt="logo_topo">
+    </div>
+
+    <div id="busca_e_frase">
+        <div class="container">
+            <h1 id="clara_h1">ENCONTRE SEU PRÓXIMO</h1>
+            <h1 id="roxa_h1"> FILME </h1>
+            <p id="P">Explore, avalie e compartilhe sua opinião sobre os melhores filmes.</p>
+            <form class="campo-busca">
+                <input type="text" placeholder="Busca..." class="busca_pg1">
+                <button type="submit">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="corpo">
+        <section id="FILMES_EM_DESTAQUE">
+            <div id="destaque">
+                <h2> Em destaque:</h2>
+                <a id="a_ver_todos" href="../pg_2/pg2.html">Ver todos →</a>
+
+            </div>
+        </section>
+
+        <!-- CARROSEL -->
+        <div id="CARROSEL">
+
+            <!-- ALTERADO: adicionei type="button" para o botão não tentar enviar formulário -->
+            <button id="bntAnterior" type="button">
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+
+            <!-- nessa div é onde o JS insere os filmes -->
+            <!-- ALTERADO: tirei o <script> que estava aqui dentro. Ele rodava antes
+                 dos botões existirem e causava o erro. -->
+            <div id="filme"></div>
+
+            <button id="bntProximo" type="button">
+                <i class="fa-solid fa-chevron-right"></i>
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- ALTERADO: o <script> agora fica AQUI, no final do body, depois de todos os
+         elementos (botões, div#filme, formulário) já existirem na página. -->
+    <script src="../_shared/auth.js"></script>
+    <script>
+        atualizarMenu();
+    </script>
+    <script src="pg1.js"></script>
+</body>
+
+</html>

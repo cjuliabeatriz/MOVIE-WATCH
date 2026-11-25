@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <title>MOVIE WATCH - Ver Todos</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="pg2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+
+<body>
+    <div id="cabeçalho">
+        <nav>
+            <a href="../pg_1/index.html" id="nav_inicio">Inicio</a>
+            <a href="pg2.html" id="nav_filmes" class="ativo">Filmes</a>
+            <a href="../pg_3/pg3.html" id="nav_favoritos">Favoritos</a>
+            <a href="../pg_4/pg4.html" id="nav_perfil">Perfil</a>
+            <a href="../pg_6/login.html" id="nav_login">Login</a>
+            <a href="../pg_5/cadastro.html" id="nav_cadastro">Criar Conta</a>
+            <a href="#" id="nav_sair">Sair</a>
+        </nav>
+        <img src="../pg_1/logo.png" alt="logo_topo">
+    </div>
+
+    <div id="busca_e_frase">
+        <div class="container">
+            <h1 id="clara_h1">ENCONTRE SEU PRÓXIMO</h1>
+            <h1 id="roxa_h1"> FILME </h1>
+            <p id="P">Explore, avalie e compartilhe sua opinião sobre os melhores filmes.</p>
+            <br>
+            <form class="campo-busca">
+                <input type="text" placeholder="Busca..." class="busca_pg1">
+                <button type="submit">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="corpo">
+        <section id="FILMES_EM_DESTAQUE">
+            <div id="destaque">
+                <div class="container">
+                    <h2>Todos os Filmes:</h2>
+                </div>
+            </div>
+        </section>
+
+        <div id="TODOS_OS_FILMES">
+            <div id="todos_filmes"></div>
+        </div>
+
+        <div id="sem_resultados" class="sem-resultados" style="display: none;">
+            <p>Nenhum filme encontrado.</p>
+        </div>
+    </div>
+
+    <script src="../_shared/auth.js"></script>
+    <script>
+        atualizarMenu();
+    </script>
+    <script>
+        let filmes = [];
+
+        const areaFilmes = document.getElementById("todos_filmes");
+        const semResultados = document.getElementById("sem_resultados");
+
+        function renderizar(filmesParaMostrar) {
+            areaFilmes.innerHTML = "";
+
+            if (!filmesParaMostrar || filmesParaMostrar.length === 0) {
+                semResultados.style.display = "block";
+                return;
+            }
+
+            semResultados.style.display = "none";
+
+            filmesParaMostrar.forEach(filme => {
+                areaFilmes.innerHTML += `
+                    <div>
+                        <a href="../descrição_filme/descrição.html?id=${filme.imdb_id}"> 
+                            <h2>${filme.name}</h2>
+                            <img src="${filme.poster}" alt="${filme.name}">
+                        </a>
+                    </div>
+                `;
+            });
+        }
+
+        fetch("https://cinemeta-catalogs.strem.io/top/catalog/movie/top.json")
+            .then(resposta => resposta.json())
+            .then(dados => {
+                filmes = dados.metas;
+                renderizar(filmes);
+                console.log(filmes);
+            })
+            .catch(erro => console.error("Erro ao carregar filmes:", erro));
+
+        const formulario = document.querySelector(".campo-busca");
+
+        formulario.addEventListener("submit", function (evento) {
+            evento.preventDefault();
+
+            const pesquisa = formulario.querySelector("input").value.trim();
+
+            if (pesquisa === "") {
+                fetch("https://cinemeta-catalogs.strem.io/top/catalog/movie/top.json")
+                    .then(resposta => resposta.json())
+                    .then(dados => {
+                        filmes = dados.metas;
+                        renderizar(filmes);
+                    })
+                    .catch(erro => console.error("Erro ao recarregar filmes:", erro));
+                return;
+            }
+
+            fetch(`https://v3-cinemeta.strem.io/catalog/movie/top/search=${encodeURIComponent(pesquisa)}.json`)
+                .then(resposta => resposta.json())
+                .then(dados => {
+                    renderizar(dados.metas);
+                })
+                .catch(erro => console.error("Erro na pesquisa:", erro));
+        });
+    </script>
+</body>
+
+</html>

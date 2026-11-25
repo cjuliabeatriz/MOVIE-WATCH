@@ -1,0 +1,250 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bungee&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+body {
+    margin: 0;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+#cabeçalho {
+    background-color: #1a1f2e;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 20px;
+    box-sizing: border-box;
+}
+
+#cabeçalho img {
+    width: 80px;
+    position: absolute;
+    left: 20px;
+}
+
+nav {
+    display: flex;
+    gap: 30px;
+}
+
+nav a {
+    color: #7028b4;
+    font-family: 'Anton', sans-serif;
+    font-size: 20px;
+    text-decoration: none;
+}
+
+nav a.ativo {
+    color: #fff;
+}
+
+a:hover {
+    color: #fff;
+}
+
+#busca_e_frase {
+    background-color: #0c1224;
+    padding: 60px 0;
+    box-sizing: border-box;
+}
+
+#busca_e_frase .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 20px;
+}
+
+#clara_h1 {
+    margin: 0;
+    color: white;
+    font-family: 'Bungee';
+    font-size: 48px;
+}
+
+#roxa_h1 {
+    margin: 0;
+    color: #4d296e;
+    font-family: 'Bungee';
+    font-size: 48px;
+}
+
+#P {
+    margin: 0;
+    color: white;
+    font-family: Inter;
+    font-size: 18px;
+    max-width: 800px;
+}
+
+.corpo {
+    margin: 0;
+    background-color: #0c1224;
+    min-height: 60vh;
+    padding: 40px 0;
+}
+
+.filmes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 25px;
+    padding: 20px 0;
+}
+
+.filme-card {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border: 1px solid rgba(112, 40, 180, 0.2);
+}
+
+.filme-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 20px rgba(112, 40, 180, 0.3);
+}
+
+.filme-card img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    display: block;
+}
+
+.filme-info {
+    padding: 15px;
+    text-align: center;
+}
+
+.filme-info h3 {
+    color: #fff;
+    font-family: 'Montserrat', sans-serif;
+    margin: 0 0 10px 0;
+    font-size: 18px;
+}
+
+.btn-remover {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 0 0 20px 20px;
+    background: linear-gradient(135deg, #4d296e, #7028b4);
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.btn-remover:hover {
+    background: linear-gradient(135deg, #7028b4, #4d296e);
+}
+
+.vazio {
+    text-align: center;
+    padding: 60px 20px;
+    color: #fff;
+}
+
+.vazio p {
+    font-family: 'Inter', sans-serif;
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: #ccc;
+}
+
+.vazio a {
+    color: #7028b4;
+    text-decoration: none;
+    font-family: 'Anton', sans-serif;
+    font-size: 18px;
+}
+
+.vazio a:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+
+/* Carregando */
+.carregando {
+    text-align: center;
+    padding: 40px;
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+}
+
+.erro {
+    text-align: center;
+    padding: 40px;
+    color: #ff4444;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+    #cabeçalho {
+        flex-direction: column;
+        height: auto;
+        padding: 15px 0;
+        gap: 10px;
+    }
+
+    #cabeçalho img {
+        position: static;
+        width: 60px;
+        margin-top: 10px;
+    }
+
+    nav {
+        flex-direction: column;
+        gap: 12px;
+        align-items: center;
+    }
+
+    nav a {
+        font-size: 16px;
+    }
+
+    #busca_e_frase {
+        padding: 40px 0;
+    }
+
+    #clara_h1,
+    #roxa_h1 {
+        font-size: 28px;
+    }
+
+    #P {
+        font-size: 14px;
+    }
+
+    .filmes-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 15px;
+    }
+
+    .filme-card img {
+        height: 220px;
+    }
+}
+
+@media (max-width: 480px) {
+    .filmes-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .filme-card img {
+        height: 200px;
+    }
+}
